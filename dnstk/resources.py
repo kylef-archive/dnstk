@@ -70,6 +70,50 @@ class CNAMEResource(Resource):
     def __bytes__(self):
         return pack_name(self.cname)
 
+
+class SOAResource(Resource):
+    name = 'SOA'
+    value = 6
+
+    @classmethod
+    def parse(cls, payload, offset, length):
+        mname, offset = parse_name(payload, offset)
+        rname, offset = parse_name(payload, offset)
+
+        serial = unpack('>I', payload[offset:offset + 4])[0]
+        offset += 4
+
+        refresh = unpack('>i', payload[offset:offset + 4])[0]
+        offset += 4
+
+        retry = unpack('>i', payload[offset:offset + 4])[0]
+        offset += 4
+
+        expire = unpack('>i', payload[offset:offset + 4])[0]
+        offset += 4
+
+        minimum = unpack('>i', payload[offset:offset + 4])[0]
+        offset += 4
+
+        return cls(mname, rname, serial, refresh, retry, expire, minimum)
+
+    def __init__(self, mname='', rname='', serial=0, refresh=0, retry=0,
+            expire=0, minimum=0):
+        self.mname = mname
+        self.rname = rname
+        self.serial = serial
+        self.refresh = refresh
+        self.retry = retry
+        self.expire = expire
+        self.minimum = minimum
+
+    def __bytes__(self):
+        return (pack_name(self.mname) + pack_name(self.rname) +
+                pack('>I', self.serial) +  pack('>i', self.refresh) +
+                pack('>i', self.retry) + pack('>i', self.expire) +
+                pack('>i', self.minimum))
+
+
 class MXResource(Resource):
     name = 'MX'
     value = 15

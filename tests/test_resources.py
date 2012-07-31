@@ -22,6 +22,23 @@ class ResourceTest(unittest.TestCase):
         self.assertEqual(CNAMEResource.parse(rdata, 0, len(rdata)).cname, cname)
         self.assertEqual(bytes(CNAMEResource(cname)), rdata)
 
+    def test_soa(self):
+        rdata = b'\x05apple\x03com\x00\x04root\x05apple\x03com\x00\x00' + \
+            b'\x00\x00\x03\x00\x01Q\x80\x00\x00\x0e\x10\x00\t:\x80\x00\x00*0'
+        mname = 'apple.com'
+        rname = 'root.apple.com'
+
+        for resource in (SOAResource.parse(rdata, 0, len(rdata)),
+                SOAResource(mname, rname, 3, 86400, 3600, 604800, 10800)):
+            self.assertEqual(resource.mname, mname)
+            self.assertEqual(resource.rname, rname)
+            self.assertEqual(resource.serial, 3)
+            self.assertEqual(resource.refresh, 86400)
+            self.assertEqual(resource.retry, 3600)
+            self.assertEqual(resource.expire, 604800)
+            self.assertEqual(resource.minimum, 10800)
+            self.assertEqual(bytes(resource), rdata)
+
     def test_mx(self):
         rdata = b'\x00\x01\x05ASPMX\x01L\nGOOGLEMAIL\x03COM\x00'
         mx = 'ASPMX.L.GOOGLEMAIL.COM'
