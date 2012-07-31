@@ -1,3 +1,5 @@
+from struct import unpack
+
 def parse_name(payload, offset):
     name = []
 
