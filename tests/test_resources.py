@@ -3,6 +3,11 @@ import unittest
 from dnstk.resources import *
 
 class ResourceTest(unittest.TestCase):
+    def test_find(self):
+        self.assertEqual(Resource.find('A'), AResource)
+        self.assertEqual(Resource.find(), Resource)
+        self.assertEqual(Resource.find(value=5), CNAMEResource)
+
     def test_a(self):
         rdata = b'\x7f\x00\x00\x01'
         ip = '127.0.0.1'
