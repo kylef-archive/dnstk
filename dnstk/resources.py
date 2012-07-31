@@ -70,3 +70,21 @@ class CNAMEResource(Resource):
     def __bytes__(self):
         return pack_name(self.cname)
 
+class MXResource(Resource):
+    name = 'MX'
+    value = 15
+
+    @classmethod
+    def parse(cls, payload, offset, length):
+        preference = unpack('>H', payload[offset:offset + 2])[0]
+        offset += 2
+        name = parse_name(payload, offset)[0]
+        return cls(name, preference)
+
+    def __init__(self, name=None, preference=0):
+        self.mx = name
+        self.preference = preference
+
+    def __bytes__(self):
+        return pack('>H', self.preference) + pack_name(self.mx)
+

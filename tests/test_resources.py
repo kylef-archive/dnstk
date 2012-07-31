@@ -17,5 +17,15 @@ class ResourceTest(unittest.TestCase):
         self.assertEqual(CNAMEResource.parse(rdata, 0, len(rdata)).cname, cname)
         self.assertEqual(bytes(CNAMEResource(cname)), rdata)
 
+    def test_mx(self):
+        rdata = b'\x00\x01\x05ASPMX\x01L\nGOOGLEMAIL\x03COM\x00'
+        mx = 'ASPMX.L.GOOGLEMAIL.COM'
+
+        for resource in (MXResource.parse(rdata, 0, len(rdata)),
+                MXResource(mx, 1)):
+            self.assertEqual(resource.mx, mx)
+            self.assertEqual(resource.preference, 1)
+            self.assertEqual(bytes(resource), rdata)
+
 
 
