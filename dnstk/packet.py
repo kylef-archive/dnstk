@@ -2,6 +2,8 @@ from struct import pack, unpack
 from dnstk.resources import Resource
 from dnstk.utils import parse_name, pack_name
 
+DEFAULT_TTL = 518400
+
 # Flags
 DNS_CD = 0x0010 # checking disabled
 DNS_AD = 0x0020 # authenticated data
@@ -32,16 +34,16 @@ class Entry(object):
     @classmethod
     def parse(cls, payload, offset):
         name, offset = parse_name(payload, offset)
-        typ = unpack('>H', payload[offset:offset + 2])[0]
+        resource = unpack('>H', payload[offset:offset + 2])[0]
         offset += 2
         c = unpack('>H', payload[offset:offset + 2])[0]
         offset += 2
 
-        return cls(name, typ=Resource.find(value=typ), cls=find_class(c)), offset
+        return cls(name, resource=Resource.find(value=resource), cls=find_class(c)), offset
 
-    def __init__(self, name, typ=None, cls='IN'):
+    def __init__(self, name, resource=None, cls='IN'):
         self.name = name
-        self.typ = typ or Resource
+        self.resource = resource or Resource
         self.cls = cls
 
     def __repr__(self):
@@ -49,7 +51,8 @@ class Entry(object):
                 self.typ, self.cls)
 
     def __bytes__(self):
-        return (pack_name(self.name) + pack('>H', self.typ.value) +
+        resource = self.resource or self.typ
+        return (pack_name(self.name) + pack('>H', resource.value) +
             pack('>H', DNS_CLASS[self.cls]))
 
 
@@ -64,18 +67,23 @@ class ResourceRecord(Entry):
         offset += 4
         rdata_length = unpack('>H', payload[offset:offset + 2])[0]
         offset += 2
-        obj.resource = obj.typ.parse(payload, offset, rdata_length)
+        obj.resource = obj.resource.parse(payload, offset, rdata_length)
         offset += rdata_length
 
         return obj, offset
+
+    def __init__(self, name='', ttl=DEFAULT_TTL, resource=None, cls='IN'):
+        super(ResourceRecord, self).__init__(name, resource, cls)
+        self.ttl = ttl
 
     def __repr__(self):
         return '<{} ({} {} {})>'.format(self.__class__.__name__, self.name,
                 self.resource, self.cls)
 
     def __bytes__(self):
-        return (super(ResourceRecord, self).__bytes__() +
-            pack('>I', self.ttl), pack('>H', len(self.rdata)) + self.rdata)
+        rdata = bytes(self.resource)
+        return (super(ResourceRecord, self).__bytes__() + pack('>I', self.ttl) +
+                pack('>H', len(rdata)) + rdata)
 
 
 class Packet(object):
@@ -124,7 +132,7 @@ class Packet(object):
         for entries in (self.questions, self.answers, self.authorities,
                 self.additional):
             for entry in entries:
-                payload += entry.__bytes__()
+                payload += bytes(entry)
 
         return payload
 
