@@ -55,6 +55,9 @@ class AResource(Resource):
     def __init__(self, ip=None):
         self.ip = ip
 
+    def __str__(self):
+        return self.ip
+
     def __bytes__(self):
         return pack('>BBBB', *([int(x) for x in self.ip.split('.')]))
 
@@ -70,6 +73,9 @@ class NSResource(Resource):
 
     def __init__(self, ns=''):
         self.ns = ns
+
+    def __str__(self):
+        return self.ns
 
     def __bytes__(self):
         return pack_name(self.ns)
@@ -101,6 +107,9 @@ class CNAMEResource(Resource):
 
     def __init__(self, name=None):
         self.cname = name
+
+    def __str__(self):
+        return self.cname
 
     def __bytes__(self):
         return pack_name(self.cname)
@@ -164,6 +173,9 @@ class MXResource(Resource):
         self.mx = name
         self.preference = preference
 
+    def __str__(self):
+        return '{} {}'.format(self.preference, self.name)
+
     def __bytes__(self):
         return pack('>H', self.preference) + pack_name(self.mx)
 
@@ -178,6 +190,9 @@ class TXTResource(Resource):
 
     def __init__(self, data=None):
         self.data = data
+
+    def __str__(self):
+        return self.data
 
     def __bytes__(self):
         return self.data.encode()
