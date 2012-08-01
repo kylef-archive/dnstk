@@ -188,7 +188,7 @@ class SSHFPResource(Resource):
     value = 44
 
     RSA = 1
-    DSS = 2
+    DSA = 2
 
     @classmethod
     def parse(cls, payload, offset, length):
@@ -198,7 +198,11 @@ class SSHFPResource(Resource):
         return cls(fingerprint, algorithm, fingerprint_type)
 
     def __init__(self, fingerprint=None, algorithm=1, fingerprint_type=1):
-        self.fingerprint = fingerprint
+        if isinstance(fingerprint, str):
+            self.fingerprint = fingerprint.encode()
+        else:
+            self.fingerprint = fingerprint
+
         self.algorithm = algorithm
         self.fingerprint_type = fingerprint_type
 
