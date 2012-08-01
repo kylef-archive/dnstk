@@ -136,3 +136,22 @@ class Packet(object):
 
         return payload
 
+    @property
+    def is_response(self):
+        return int((self.flags & 0x8000) == 0x8000)
+
+    @is_response.setter
+    def is_response(self, value):
+        if value:
+            self.flags |= 0x8000
+        else:
+            self.flags &= ~0x8000
+
+    @property
+    def rcode(self):
+        return self.flags & 0xf
+
+    @rcode.setter
+    def rcode(self, value):
+        self.flags = (self.flags & ~0xf) | (value & 0xf)
+
