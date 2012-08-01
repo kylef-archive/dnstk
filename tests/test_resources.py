@@ -49,5 +49,12 @@ class ResourceTest(unittest.TestCase):
             self.assertEqual(resource.preference, 1)
             self.assertEqual(bytes(resource), rdata)
 
+    def test_sshfp(self):
+        rdata = b'\x01\x01\xdc\xaf+\xd0\xc3\xe9\x14PP\xfd\xed\xce\xd3(\x89\x9a\xacf\x19\xa3'
+        fingerprint = b'dcaf2bd0c3e9145050fdedced328899aac6619a3'
+
+        resource = SSHFPResource.parse(rdata, 0, len(rdata))
+        self.assertEqual(fingerprint, resource.fingerprint)
+        self.assertEqual(bytes(resource), rdata)
 
 

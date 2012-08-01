@@ -48,7 +48,7 @@ class Entry(object):
 
     def __repr__(self):
         return '<{} ({} {} {})>'.format(self.__class__.__name__, self.name,
-                self.typ, self.cls)
+                self.resource, self.cls)
 
     def __bytes__(self):
         resource = self.resource or self.typ

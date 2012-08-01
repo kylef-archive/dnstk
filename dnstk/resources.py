@@ -1,4 +1,5 @@
 from struct import pack, unpack
+import binascii
 from dnstk.utils import parse_name, pack_name
 
 class Resource(object):
@@ -161,8 +162,31 @@ class TXTResource(Resource):
         self.data = data
 
     def __bytes__(self):
-        return data.encode()
+        return self.data.encode()
 
+
+class SSHFPResource(Resource):
+    name = 'SSHFP'
+    value = 44
+
+    RSA = 1
+    DSS = 2
+
+    @classmethod
+    def parse(cls, payload, offset, length):
+        algorithm, fingerprint_type = unpack('>BB', payload[offset:offset+2])
+        offset += 2
+        fingerprint = binascii.hexlify(payload[offset:offset + length])
+        return cls(fingerprint, algorithm, fingerprint_type)
+
+    def __init__(self, fingerprint=None, algorithm=1, fingerprint_type=1):
+        self.fingerprint = fingerprint
+        self.algorithm = algorithm
+        self.fingerprint_type = fingerprint_type
+
+    def __bytes__(self):
+        return pack('>BB', self.algorithm, self.fingerprint_type) + \
+                binascii.unhexlify(self.fingerprint)
 
 class AXFRResource(Resource):
     name = 'AXFR'
