@@ -55,6 +55,22 @@ class AResource(Resource):
         return pack('>BBBB', *([int(x) for x in self.ip.split('.')]))
 
 
+class NSResource(Resource):
+    name = 'NS'
+    value = 2
+
+    @classmethod
+    def parse(cls, payload, offset, length):
+        ns = parse_name(payload, offset)[0]
+        return cls(ns)
+
+    def __init__(self, ns=''):
+        self.ns = ns
+
+    def __bytes__(self):
+        return pack_name(self.ns)
+
+
 class CNAMEResource(Resource):
     name = 'CNAME'
     value = 5
@@ -131,4 +147,24 @@ class MXResource(Resource):
 
     def __bytes__(self):
         return pack('>H', self.preference) + pack_name(self.mx)
+
+
+class TXTResource(Resource):
+    name = 'TXT'
+    value = 16
+
+    @classmethod
+    def parse(cls, payload, offset, length):
+        return cls(payload[offset:offset + length].decode())
+
+    def __init__(self, data=None):
+        self.data = data
+
+    def __bytes__(self):
+        return data.encode()
+
+
+class AXFRResource(Resource):
+    name = 'AXFR'
+    value = 252
 
