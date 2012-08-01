@@ -14,3 +14,7 @@ class NameTest(unittest.TestCase):
     def test_pack(self):
         self.assertEqual(pack_name('developers.apple.com'),
                 b'\ndevelopers\x05apple\x03com\x00')
+
+    def test_empty(self):
+        self.assertEqual(pack_name(''), b'\x00')
+        self.assertEqual(parse_name(b'\x00', 0)[0], '')

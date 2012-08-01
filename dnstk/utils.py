@@ -15,17 +15,18 @@ def parse_name(payload, offset):
             name.append(parse_name(payload, ptr)[0])
             break
         else:
-            name.append(payload[offset:offset + n].decode('utf-8'))
+            name.append(payload[offset:offset + n].decode())
             offset += n
 
     return '.'.join(name), offset
 
 def pack_name(name):
-    names = name.split('.')
     payload = b''
 
-    for name in names:
-        payload += (chr(len(name)) + name).encode('utf-8')
+    if name:
+        names = name.split('.')
+        for name in names:
+            payload += (chr(len(name)) + name).encode()
 
-    return payload + chr(0).encode('utf-8')
+    return payload + bytes(1)
 
