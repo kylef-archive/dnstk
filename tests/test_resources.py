@@ -15,6 +15,13 @@ class ResourceTest(unittest.TestCase):
         self.assertEqual(AResource.parse(rdata, 0, 4).ip, ip)
         self.assertEqual(bytes(AResource(ip)), rdata)
 
+    def test_aaaa(self):
+        rdata = b"*\x02'p\x00\x00\x00\x00\x02\x1aJ\xff\xfe\xbf:\xcc"
+        ip = '2a02:2770::21a:4aff:febf:3acc'
+
+        self.assertEqual(AAAAResource.parse(rdata, 0, 16).ip, ip)
+        self.assertEqual(bytes(AAAAResource(ip)), rdata)
+
     def test_cname(self):
         rdata = b'\x04test\x03com\x00'
         cname = 'test.com'

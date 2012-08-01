@@ -1,6 +1,9 @@
 from struct import pack, unpack
 import binascii
+import socket
+
 from dnstk.utils import parse_name, pack_name
+
 
 class Resource(object):
     name = 'Unknown'
@@ -71,6 +74,21 @@ class NSResource(Resource):
     def __bytes__(self):
         return pack_name(self.ns)
 
+
+class AAAAResource(AResource):
+    name = 'AAAA'
+    value = 28
+
+    @classmethod
+    def parse(cls, payload, offset, length):
+        if length != 16:
+            return Resource.parse(payload, offset, length)
+
+        ip = socket.inet_ntop(socket.AF_INET6, payload[offset:length + offset])
+        return cls(ip)
+
+    def __bytes__(self):
+        return socket.inet_pton(socket.AF_INET6, self.ip)
 
 class CNAMEResource(Resource):
     name = 'CNAME'
