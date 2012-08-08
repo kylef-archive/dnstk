@@ -58,11 +58,13 @@ class DNSClient(object):
         self.print_packet(packet)
 
     def print_packet(self, packet):
+        print('Response code: {}'.format(packet.rcode))
+
         if packet.questions:
             print('Question section')
 
             for question in packet.questions:
-                self.print_entry(question)
+                print(question)
 
             print()
 
@@ -70,7 +72,7 @@ class DNSClient(object):
             print('Answer section')
 
             for answer in packet.answers:
-                self.print_entry(answer)
+                print(answer)
 
             print()
 
@@ -78,7 +80,7 @@ class DNSClient(object):
             print('Authoritive section')
 
             for authority in packet.authorities:
-                self.print_entry(authority)
+                print(authority)
 
             print()
 
@@ -86,16 +88,9 @@ class DNSClient(object):
             print('Additional section')
 
             for additional in packet.additional:
-                self.print_entry(additional)
+                print(additional)
 
             print()
-
-    def print_entry(self, entry):
-        if isinstance(entry, Question):
-            print(entry.name + '\t' + entry.cls + '\t' + entry.resource.name)
-        else:
-            print('{}\t{}\t{}\t{}\t{}'.format(entry.name, entry.ttl, entry.cls,
-                entry.resource.name, entry.resource))
 
 
 def main():

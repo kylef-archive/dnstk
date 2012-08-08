@@ -49,6 +49,9 @@ class Entry(object):
         return '<{} ({} {} {})>'.format(self.__class__.__name__, self.name,
                 self.resource, self.cls)
 
+    def __str__(self):
+        return self.name + '\t' + self.cls + '\t' + self.resource.name
+    
     def __bytes__(self):
         resource = self.resource or self.typ
         return (pack_name(self.name) + pack('>H', resource.value) +
@@ -74,6 +77,10 @@ class ResourceRecord(Entry):
     def __init__(self, name='', ttl=DEFAULT_TTL, resource=None, cls='IN'):
         super(ResourceRecord, self).__init__(name, resource, cls)
         self.ttl = ttl
+
+    def __str__(self):
+        return (self.name + '\t' + self.cls + '\t' + self.resource.name + '\t' +
+            str(self.resource))
 
     def __repr__(self):
         return '<{} ({} {} {})>'.format(self.__class__.__name__, self.name,
