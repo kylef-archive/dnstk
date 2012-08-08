@@ -174,7 +174,7 @@ class MXResource(Resource):
         self.preference = preference
 
     def __str__(self):
-        return '{} {}'.format(self.preference, self.name)
+        return '{} {}'.format(self.preference, self.mx)
 
     def __bytes__(self):
         return pack('>H', self.preference) + pack_name(self.mx)
@@ -220,6 +220,10 @@ class SSHFPResource(Resource):
 
         self.algorithm = algorithm
         self.fingerprint_type = fingerprint_type
+
+    def __str__(self):
+        return '{} {} {}'.format(self.algorithm, self.fingerprint_type,
+                self.fingerprint.decode())
 
     def __bytes__(self):
         return pack('>BB', self.algorithm, self.fingerprint_type) + \
