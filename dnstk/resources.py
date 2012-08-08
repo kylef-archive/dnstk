@@ -30,6 +30,10 @@ class Resource(object):
     def parse(cls, payload, offset, length):
         return cls(payload[offset:offset + length])
 
+    @classmethod
+    def as_record(cls, name, ttl, *args, **kwargs):
+        return ResourceRecord(name, ttl, cls(*args, **kwargs))
+
     def __init__(self, rdata=None):
         self.rdata = rdata
 
@@ -233,3 +237,4 @@ class AXFRResource(Resource):
     name = 'AXFR'
     value = 252
 
+from dnstk.packet import ResourceRecord

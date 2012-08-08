@@ -1,5 +1,4 @@
 from struct import pack, unpack
-from dnstk.resources import Resource
 from dnstk.utils import parse_name, pack_name
 
 DEFAULT_TTL = 518400
@@ -155,3 +154,4 @@ class Packet(object):
     def rcode(self, value):
         self.flags = (self.flags & ~0xf) | (value & 0xf)
 
+from dnstk.resources import Resource
