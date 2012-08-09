@@ -12,7 +12,7 @@ dnstk-cli
 
 dnstk includes its own client which works similar to dig_.
 
-.. source-code:: shell
+.. source-code:: bash
 
     $ dnstk-cli ddg.gg
     Response code: 0
@@ -25,7 +25,7 @@ dnstk includes its own client which works similar to dig_.
     ddg.gg IN  A   208.94.146.70
     ddg.gg IN  A   208.94.146.71
 
-.. source-code:: shell
+.. source-code:: bash
 
     $ dnstk-cli irc.darkscience.net -r AAAA
     Response code: 0
