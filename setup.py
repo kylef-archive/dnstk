@@ -15,6 +15,18 @@ setup(
     install_requires=['zokket >= 1.2'],
     url='https://github.com/kylef/dnstk/',
     download_url='http://github.com/kylef/dnstk/zipball/{}'.format(dnstk.__version__),
-    license='BSD'
+    license='BSD',
+    description="Python DNS toolkit",
+    long_description=open('README.rst').read(),
+    classifiers = [
+        'Development Status :: 4 - Beta',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: BSD License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 3.2',
+        'Programming Language :: Python :: 3.3',
+        'Topic :: Internet :: Name Service (DNS)',
+        'Topic :: Software Development :: Libraries',
+    ]
 )
 
