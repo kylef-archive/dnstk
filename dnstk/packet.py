@@ -161,4 +161,15 @@ class Packet(object):
     def rcode(self, value):
         self.flags = (self.flags & ~0xf) | (value & 0xf)
 
+    @property
+    def authoritive_answer(self):
+        return int((self.flags & 0x0400) == 0x0400)
+
+    @authoritive_answer.setter
+    def authoritive_answer(self, value):
+        if value:
+            self.flags |= 0x0400
+        else:
+            self.flags &= ~0x0400
+
 from dnstk.resources import Resource
