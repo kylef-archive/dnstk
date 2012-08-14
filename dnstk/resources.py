@@ -233,6 +233,13 @@ class SSHFPResource(Resource):
         return pack('>BB', self.algorithm, self.fingerprint_type) + \
                 binascii.unhexlify(self.fingerprint)
 
+class OPTResource(Resource):
+    name = 'OPT'
+    value = 41
+
+    def __str__(self):
+        return str(self.rdata)
+
 
 class IXFRResource(Resource):
     name = 'IXFR'
