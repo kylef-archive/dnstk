@@ -233,8 +233,15 @@ class SSHFPResource(Resource):
         return pack('>BB', self.algorithm, self.fingerprint_type) + \
                 binascii.unhexlify(self.fingerprint)
 
+
+class IXFRResource(Resource):
+    name = 'IXFR'
+    value = 251
+
+
 class AXFRResource(Resource):
     name = 'AXFR'
     value = 252
+
 
 from dnstk.packet import ResourceRecord
