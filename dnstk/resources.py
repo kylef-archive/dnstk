@@ -251,4 +251,35 @@ class AXFRResource(Resource):
     value = 252
 
 
+class DNSKEYResource(Resource):
+    name = 'DNSKEY'
+    value = 48
+
+    RSASHA256 = 8
+    RSASHA512 = 10
+
+    @classmethod
+    def parse(cls, payload, offset, length):
+        flags = unpack('>h', payload[offset:offset + 2])[0]
+        offset += 2
+        protocol = unpack('>B', payload[offset:offset + 1])[0]
+        offset += 1
+        algorithm = unpack('>B', payload[offset:offset + 1])[0]
+        offset += 1
+
+        public_key = payload[offset:offset + length - 4]
+
+        return cls(flags, algorithm, public_key, protocol)
+
+    def __init__(self, flags, algorithm, public_key, protocol=3):
+        self.flags = flags
+        self.protocol = protocol
+        self.algorithm = algorithm
+        self.public_key = public_key
+
+    def __bytes__(self):
+        return pack('>hBB', self.flags, self.protocol, self.algorithm) + \
+            self.public_key
+
+
 from dnstk.packet import ResourceRecord
