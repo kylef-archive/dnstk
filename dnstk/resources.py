@@ -277,6 +277,9 @@ class DNSKEYResource(Resource):
         self.algorithm = algorithm
         self.public_key = public_key
 
+    def __str__(self):
+        return '{} {} {}'.format(self.flags, self.protocol, self.algorithm)
+
     def __bytes__(self):
         return pack('>hBB', self.flags, self.protocol, self.algorithm) + \
             self.public_key
