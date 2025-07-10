@@ -12,7 +12,6 @@ setup(
             'dnstk-cli = dnstk.client:main',
         ]
     },
-    install_requires=['zokket >= 1.2'],
     url='https://github.com/kylef/dnstk/',
     license='BSD',
     description='Python DNS toolkit',
@@ -22,8 +21,7 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3.2',
-        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
         'Topic :: Internet :: Name Service (DNS)',
         'Topic :: Software Development :: Libraries',
     ]
