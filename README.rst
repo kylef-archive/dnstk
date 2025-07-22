@@ -13,7 +13,7 @@ dnstk-cli
 dnstk includes its own client which works similar to dig_::
 
     $ dnstk-cli ddg.gg
-    Response code: 0
+    Response code: NOERROR
     Question section
     ddg.gg IN  A
 
@@ -22,15 +22,6 @@ dnstk includes its own client which works similar to dig_::
     ddg.gg IN  A   208.94.146.81
     ddg.gg IN  A   208.94.146.70
     ddg.gg IN  A   208.94.146.71
-
-    $ dnstk-cli irc.darkscience.net -r AAAA
-    Response code: 0
-    Question section
-    irc.darkscience.net    IN  AAAA
-
-    Answer section
-    irc.darkscience.net   IN  CNAME   irc.darkscience.ws
-    irc.darkscience.ws    IN  AAAA    2a02:2770::21a:4aff:fec1:1628
 
 .. Links
 
