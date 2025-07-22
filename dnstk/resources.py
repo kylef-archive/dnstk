@@ -1,8 +1,8 @@
-from struct import pack, unpack
 import binascii
 import socket
+from struct import pack, unpack
 
-from dnstk.utils import parse_name, pack_name
+from dnstk.utils import pack_name, parse_name
 
 
 class Resource(object):

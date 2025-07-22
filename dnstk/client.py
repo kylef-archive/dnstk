@@ -10,7 +10,7 @@ from dnstk.udp import bind
 
 
 def print_packet(packet):
-    print('Response code: {}'.format(packet.rcode))
+    print('Response code: {}'.format(packet.rcode.name))
 
     if packet.questions:
         print('Question section')
