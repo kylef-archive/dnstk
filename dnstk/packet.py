@@ -51,7 +51,7 @@ class Entry(object):
 
     def __str__(self):
         return self.name + '\t' + self.cls + '\t' + self.resource.name
-    
+
     def __bytes__(self):
         resource = self.resource or self.typ
         return (pack_name(self.name) + pack('>H', resource.value) +

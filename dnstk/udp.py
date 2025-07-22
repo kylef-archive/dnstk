@@ -29,8 +29,8 @@ class UdpDnsProtocol(DatagramProtocol):
         self.transport.sendto(bytes(packet), addr)
 
 
-async def bind(host, port):
+async def bind(local_addr=None, remote_addr=None):
     _, protocol = await get_running_loop().create_datagram_endpoint(
-        lambda: UdpDnsProtocol(), remote_addr=(host, port)
+        lambda: UdpDnsProtocol(), local_addr=local_addr, remote_addr=remote_addr
     )
     return protocol

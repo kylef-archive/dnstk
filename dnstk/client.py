@@ -70,7 +70,7 @@ async def main():
         length = unpack('>H', await reader.read(2))[0]
         packet = Packet.parse(await reader.read(length))
     else:
-        protocol = await bind(args.server, 53)
+        protocol = await bind(remote_addr=(args.server, 53))
         protocol.send(packet)
         packet, _ = await protocol.read()
 
