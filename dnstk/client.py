@@ -9,42 +9,6 @@ from dnstk.resources import Resource
 from dnstk.udp import bind
 
 
-def print_packet(packet):
-    print('Response code: {}'.format(packet.rcode.name))
-
-    if packet.questions:
-        print('Question section')
-
-        for question in packet.questions:
-            print(question)
-
-        print()
-
-    if packet.answers:
-        print('Answer section')
-
-        for answer in packet.answers:
-            print(answer)
-
-        print()
-
-    if packet.authorities:
-        print('Authoritive section')
-
-        for authority in packet.authorities:
-            print(authority)
-
-        print()
-
-    if packet.additional:
-        print('Additional section')
-
-        for additional in packet.additional:
-            print(additional)
-
-        print()
-
-
 async def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-t', '--tcp', action='store_true')
@@ -74,7 +38,7 @@ async def main():
         protocol.send(packet)
         packet, _ = await protocol.read()
 
-    print_packet(packet)
+    print(packet)
 
 
 if __name__ == '__main__':

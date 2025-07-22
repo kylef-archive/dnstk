@@ -167,6 +167,40 @@ class Packet(object):
                 self.questions, self.answers, self.authorities,
                 self.additional)
 
+    def __str__(self) -> str:
+        result = ''
+
+        if self.is_response:
+            result += f';; status: {self.rcode.name}, id: {self.txid}\n\n'
+
+        if self.questions:
+            result += ';; QUESTION SECTION:\n'
+            for question in self.questions:
+                if self.is_response:
+                    result += ';'
+                result += f'{question}\n'
+            result += '\n'
+
+        if self.answers:
+            result += ';; ANSWER SECTION:\n'
+            for answer in self.answers:
+                result += f'{answer}\n'
+            result += '\n'
+
+        if self.authorities:
+            result += ';; AUTHORITY SECTION:\n'
+            for authority in self.authorities:
+                result += f'{authority}\n'
+            result += '\n'
+
+        if self.additional:
+            result += ';; ADDITIONAL SECTION:\n'
+            for additional in self.additional:
+                result += f'{additional}\n'
+            result += '\n'
+
+        return result
+
     def __bytes__(self):
         payload = pack('>HHHHHH',
             self.txid,
